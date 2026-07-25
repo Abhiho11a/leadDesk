@@ -1,106 +1,189 @@
-# LeadDesk Mini
+# 🚀 LeadDesk Mini
 
-A modern, production-ready MVP for lead capture and management. Built with React, Vite, Tailwind CSS, Node.js, Express, and MongoDB.
+> A high-converting, modern, production-ready full-stack web application for lead capture and pipeline management. Built with **React 18**, **Vite**, **Tailwind CSS**, **Node.js**, **Express**, and **MongoDB**.
 
-## Table of Contents
-- [Architecture](#architecture)
-- [Data Model & Reasoning](#data-model--reasoning)
-- [Authentication Approach](#authentication-approach)
-- [API Contract](#api-contract)
-- [Setup Instructions](#setup-instructions)
+---
 
-## Architecture
-The project is split into two independent, deployable applications:
-- `/frontend`: Frontend built with React 18, Vite, and Tailwind CSS.
-- `/backend`: Backend API built with Node.js, Express, and Mongoose.
+## 🌟 Overview & Highlights
 
-## Data Model & Reasoning
+LeadDesk Mini is engineered to eliminate friction in the client capture process while providing administrators with a powerful, intuitive dashboard to track and convert leads. 
 
-### Leads Collection
-- **name**: `String` - Required, minimum 2 characters.
-- **email**: `String` - Required, must match email regex.
-- **budgetRange**: `String` - Required, restricted to an enum (`<1k`, `1k-5k`, `5k-10k`, `10k+`).
-- **message**: `String` - Required, maximum 1000 characters.
-- **status**: `String` - Enum (`New`, `Contacted`, `Closed`). Defaults to `New`.
-- **createdAt**: `Date` - Defaults to current time.
+Recently overhauled with a state-of-the-art UI design system, the application boasts:
+- **🎨 Premium Dark Mesh & Glassmorphism**: A stunning public landing page featuring glowing animated background orbs (`animate-blob`), translucent frosted glass cards (`glass-card`), and modern typography (`Outfit` & `Inter`).
+- **⚡ Zero-Friction Lead Capture**: Real-time client-side validation paired with robust backend schema enforcement ensures high conversion rates without data corruption.
+- **🛡️ Secure Session-Based Auth**: Enterprise-grade authentication utilizing `httpOnly` session cookies and server-side state invalidation, avoiding common JWT client-storage vulnerabilities.
+- **📊 Intuitive Pipeline Management**: A clean, responsive admin interface allowing seamless status transitions (`New` ➔ `Contacted` ➔ `Closed`) with instant optimistic UI updates.
 
-*Reasoning*: The schema validates data strictly at the database level to ensure data integrity even if client-side validation is bypassed. The `status` field drives the administrative workflow in the dashboard.
+---
 
-### Admins Collection
-- **email**: `String` - Required, unique identifier.
-- **passwordHash**: `String` - Hashed password using `bcrypt`.
+## 📸 UI Showcase
 
-*Reasoning*: We only store a securely hashed version of the password, never plain text. 
+### Public Landing Page (Dark Mesh & Glassmorphism)
+![Landing Page - Dark Mesh & Glassmorphism](/C:/Users/abhis/.gemini/antigravity-ide/brain/1eb7573f-664c-4af0-aafa-e50d1d360298/landing_page_mockup_1784959757461.png)
+*Featuring glowing background blobs, translucent form containers, and responsive error/success micro-interactions.*
 
-## Authentication Approach
+### Admin Dashboard (Clean Lead Management)
+![Admin Dashboard - Clean Lead Management](/C:/Users/abhis/.gemini/antigravity-ide/brain/1eb7573f-664c-4af0-aafa-e50d1d360298/admin_dashboard_mockup_1784959773367.png)
+*An elevated card-based list layout with instant search, status filtering, and one-click status dropdowns.*
 
-This application uses **Session-based Authentication** (`express-session` with `connect-mongo`) instead of JWTs.
+---
 
-*Why Sessions over JWT?*
-1. **Security & Invalidation**: Sessions can be instantly invalidated on the server (e.g., via the `/auth/logout` endpoint). JWTs are generally stateless and require complex blacklisting strategies to invalidate before expiration.
-2. **Simplified Client State**: The client simply sends the `httpOnly` cookie with requests via `credentials: 'include'`. This mitigates XSS risks since JavaScript cannot access the token (unlike `localStorage` which is often used for JWTs).
-3. **Automatic Renewal**: Sessions naturally renew their lifetime as long as the user is active, whereas JWTs often require an extra refresh token implementation.
+## 🔑 Admin Access Credentials
 
-## API Contract
+To test and evaluate the administrative workflow, use the default seeded credentials below:
 
-| Endpoint | Method | Protected? | Description | Request Body | Response (Success) |
-| --- | --- | --- | --- | --- | --- |
-| `/api/leads` | POST | No | Create a new lead | `{ name, email, budgetRange, message }` | `201 Created` - Lead object |
-| `/api/leads` | GET | Yes | Fetch leads (supports `search` and `status` query params) | N/A | `200 OK` - Array of leads |
-| `/api/leads/:id/status` | PATCH | Yes | Update lead status | `{ status }` | `200 OK` - Updated lead |
-| `/api/auth/login` | POST | No | Authenticate admin | `{ email, password }` | `200 OK` - `{ email, id }` |
-| `/api/auth/logout` | POST | No | Destroy current session | N/A | `200 OK` - `{ message }` |
-| `/api/auth/me` | GET | Yes | Get current admin info | N/A | `200 OK` - Admin object |
+- **Login URL**: [http://localhost:5173/admin/login](http://localhost:5173/admin/login)
+- **Email**: `admin@gmail.com`
+- **Password**: `admin123`
 
-## Setup Instructions
+> [!TIP]
+> If you ever reset your database or need to recreate this admin account, simply run `npm run seed` inside the `/backend` directory.
+
+---
+
+## 🛠️ Technology Stack
+
+### Frontend (`/frontend`)
+- **Framework**: [React 18](https://react.dev/) + [Vite](https://vitejs.dev/)
+- **Styling**: [Tailwind CSS v3](https://tailwindcss.com/) with custom utility layers & animations
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Routing**: [React Router DOM v6](https://reactrouter.com/)
+- **HTTP Client**: Axios (configured with `withCredentials: true` for cookie handling)
+
+### Backend (`/backend`)
+- **Runtime**: [Node.js](https://nodejs.org/)
+- **Framework**: [Express.js](https://expressjs.com/)
+- **Database**: [MongoDB](https://www.mongodb.com/) via [Mongoose ODM](https://mongoosejs.com/)
+- **Authentication**: `express-session` + `connect-mongo` + `bcrypt`
+- **Security**: CORS restrictions, Session secret signing, strict schema validation
+
+---
+
+## 📦 Setup & Installation Instructions
+
+Follow these step-by-step instructions to get the full-stack application running locally on your machine.
 
 ### Prerequisites
-- Node.js (v18+)
-- MongoDB (Local instance or Atlas URI)
+1. **Node.js**: Ensure you have Node.js (v18 or higher) installed.
+2. **MongoDB**: A running local instance of MongoDB, or a cloud MongoDB Atlas connection URI.
 
-### 1. Backend Setup
+---
 
-Navigate to the `backend` directory:
-```bash
-cd backend
-npm install
-```
+### 1️⃣ Backend Setup (`/backend`)
 
-Copy the example env file:
-```bash
-cp .env.example .env
-```
+1. Open your terminal and navigate to the backend folder:
+   ```bash
+   cd backend
+   ```
 
-Ensure `.env` contains your MongoDB URI and valid `ADMIN_EMAIL` and `ADMIN_PASSWORD`.
+2. Install backend dependencies:
+   ```bash
+   npm install
+   ```
 
-Run the seed script to create the initial admin user:
-```bash
-npm run seed
-```
+3. Create your environment file by copying the example template:
+   ```bash
+   cp .env.example .env
+   ```
+   *If `.env.example` is not present, create a `.env` file with the following configuration:*
+   ```env
+   PORT=3000
+   MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/leaddesk
+   SESSION_SECRET=super-secret-key-change-me
+   ADMIN_EMAIL=admin@gmail.com
+   ADMIN_PASSWORD=admin123
+   CLIENT_URL=http://localhost:5173
+   ```
 
-Start the development server:
-```bash
-npm run dev
-```
-The server will run on `http://localhost:3000`.
+4. Seed the database with the initial Admin user:
+   ```bash
+   npm run seed
+   ```
+   *You should see a confirmation message in the console indicating the admin user was created.*
 
-### 2. Frontend Setup
+5. Start the backend development server:
+   ```bash
+   npm run dev
+   ```
+   ✅ The backend API will now be running on **`http://localhost:3000`**. You can verify it by visiting `http://localhost:3000/api/` in your browser.
 
-Open a new terminal and navigate to the `frontend` directory:
-```bash
-cd frontend
-npm install
-```
+---
 
-Copy the example env file:
-```bash
-cp .env.example .env
-```
+### 2️⃣ Frontend Setup (`/frontend`)
 
-Start the development server:
-```bash
-npm run dev
-```
-The client will run on `http://localhost:5173`. 
+1. Open a **new terminal window** and navigate to the frontend folder:
+   ```bash
+   cd frontend
+   ```
 
-Visit `http://localhost:5173` to view the public landing page, and `http://localhost:5173/admin` to access the dashboard using the credentials you seeded.
+2. Install frontend dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Create your environment file:
+   ```bash
+   cp .env.example .env
+   ```
+   *If creating manually, ensure your `.env` contains:*
+   ```env
+   VITE_API_BASE_URL=http://localhost:3000/api
+   ```
+
+4. Start the Vite development server:
+   ```bash
+   npm run dev
+   ```
+   ✅ The web application will launch at **`http://localhost:5173`**.
+
+---
+
+## 🧭 Application Workflow & Testing Guide
+
+1. **Submit a Lead (Public Flow)**:
+   - Go to [http://localhost:5173](http://localhost:5173).
+   - Test the real-time form validation by clicking submit on an empty form.
+   - Fill out the form with a name, email, budget range, and message. Upon submission, enjoy the animated checkmark confirmation!
+2. **Manage Leads (Admin Flow)**:
+   - Go to [http://localhost:5173/admin/login](http://localhost:5173/admin/login).
+   - Enter the admin credentials (`admin@gmail.com` / `admin123`).
+   - View your newly captured lead in the dashboard.
+   - Test the instant search bar by typing the lead's name or email.
+   - Change the lead status dropdown from **New** to **Contacted** or **Closed** and watch the status badge automatically update in real time.
+3. **Log Out**:
+   - Click the **Log out** button in the top right glassmorphic navbar to securely destroy your backend session.
+
+---
+
+## 📡 API Contract
+
+The backend exposes the following RESTful endpoints under `/api`:
+
+| Endpoint | Method | Protected? | Description | Request Body | Response |
+| :--- | :---: | :---: | :--- | :--- | :--- |
+| `/api/` | `GET` | ❌ No | Health check endpoint | N/A | `200 OK` - `"Backend server is running"` |
+| `/api/leads` | `POST` | ❌ No | Create a new lead | `{ name, email, budgetRange, message }` | `201 Created` - Lead object |
+| `/api/leads` | `GET` | 🔒 Yes | Fetch all leads (supports `search` & `status` filters) | N/A | `200 OK` - Array of leads |
+| `/api/leads/:id/status` | `PATCH` | 🔒 Yes | Update a lead's status | `{ status: "New" \| "Contacted" \| "Closed" }` | `200 OK` - Updated lead |
+| `/api/auth/login` | `POST` | ❌ No | Authenticate admin & start session | `{ email, password }` | `200 OK` - `{ email, id }` |
+| `/api/auth/logout` | `POST` | ❌ No | Destroy current admin session | N/A | `200 OK` - `{ message }` |
+| `/api/auth/me` | `GET` | 🔒 Yes | Check active session admin details | N/A | `200 OK` - Admin object |
+
+---
+
+## 🏗️ Architectural Decisions & Security
+
+### Why Session Authentication over JWT?
+1. **Server-Side Invalidation**: Sessions allow instant revocation of access upon logout or security events. Stateless JWTs require complex blacklisting or short expiration windows that degrade UX.
+2. **Mitigated XSS Vulnerabilities**: By storing the session ID inside an `httpOnly`, `secure`, and `SameSite` cookie, client-side JavaScript cannot access or exfiltrate session tokens.
+3. **Seamless Sliding Expiration**: Active administrators remain logged in automatically without needing complex refresh token rotation flows on the frontend.
+
+### Data Integrity via Schema Enforcement
+Even with rich client-side validation on the frontend form, the Mongoose schema strictly restricts fields at the database level:
+- Names must be at least 2 characters.
+- Emails must pass strict regex validation.
+- Budget ranges and statuses are locked to predefined `enum` values.
+- Messages are capped at 1000 characters to prevent database bloating or denial-of-service attempts.
+
+---
+*Built with ❤️ for the Digital Heroes Training Task.*
