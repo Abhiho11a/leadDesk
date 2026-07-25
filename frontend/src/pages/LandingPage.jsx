@@ -104,170 +104,192 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col font-sans selection:bg-brand-100 selection:text-brand-900">
-      <main className="flex-grow">
+    <div className="min-h-screen flex flex-col font-sans selection:bg-brand-500/30 selection:text-white bg-slate-900 relative">
+      {/* Dynamic Mesh Background */}
+      <div className="fixed inset-0 mesh-bg z-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-[30rem] h-[30rem] bg-brand-500/20 rounded-full mix-blend-screen filter blur-[100px] opacity-70 animate-blob"></div>
+        <div className="absolute top-1/3 right-1/4 w-[30rem] h-[30rem] bg-fuchsia-500/20 rounded-full mix-blend-screen filter blur-[100px] opacity-70 animate-blob" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute -bottom-32 left-1/2 w-[30rem] h-[30rem] bg-violet-500/20 rounded-full mix-blend-screen filter blur-[100px] opacity-70 animate-blob" style={{ animationDelay: '4s' }}></div>
+      </div>
+
+      <main className="flex-grow relative z-10 flex flex-col items-center">
         {/* Hero Section */}
-        <section className="relative px-6 py-32 md:py-48 flex flex-col items-center justify-center overflow-hidden bg-white">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-50 via-white to-white" />
-          
-          <div className="relative z-10 max-w-3xl text-center space-y-8 animate-slide-up">
-            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-gray-900">
-              Capture Leads <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-indigo-500">Effortlessly</span>
+        <section className="px-6 pt-32 pb-16 md:pt-40 md:pb-24 w-full flex flex-col items-center text-center">
+          <div className="max-w-4xl space-y-8 animate-slide-up">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-brand-200 text-sm font-medium backdrop-blur-md mb-2">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
+              </span>
+              Modern Lead Capture
+            </div>
+            <h1 className="text-5xl md:text-7xl font-extrabold text-white leading-tight">
+              Grow Your Pipeline <br className="hidden md:block" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-300 via-fuchsia-400 to-brand-300 bg-[length:200%_auto] animate-pulse">Effortlessly</span>
             </h1>
-            <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-              Supercharge your pipeline with a beautifully simple, high-converting capture tool. Stop letting potential clients slip through the cracks.
+            <p className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed">
+              Supercharge your conversions with a beautifully simple capture tool that clients actually want to fill out.
             </p>
-            <div className="pt-4">
+            <div className="pt-6">
               <button 
-                onClick={() => formRef.current?.scrollIntoView({ behavior: 'smooth' })}
-                className="bg-brand-600 text-white px-8 py-4 rounded-full font-medium shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgba(99,102,241,0.3)] hover:-translate-y-1 transition-all duration-300"
+                onClick={() => formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
+                className="bg-brand-500 text-white px-8 py-4 rounded-full font-semibold shadow-[0_0_40px_-10px_rgba(217,70,239,0.5)] hover:shadow-[0_0_60px_-15px_rgba(217,70,239,0.7)] hover:-translate-y-1 hover:bg-brand-400 transition-all duration-300"
               >
-                Get Started Now
+                Start Capturing Now
               </button>
             </div>
           </div>
         </section>
 
         {/* Form Section */}
-        <section ref={formRef} className="py-24 px-6 bg-gray-50 flex justify-center">
-          <div className="max-w-xl w-full bg-white rounded-2xl shadow-xl border border-gray-100 p-8 md:p-12">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">Let's Connect</h2>
-              <p className="text-gray-500">Fill out the form below and we'll be in touch shortly.</p>
-            </div>
-
-            {isSuccess ? (
-              <div className="flex flex-col items-center justify-center py-12 text-center animate-fade-in space-y-4">
-                <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mb-4">
-                  <CheckCircle2 className="w-10 h-10 text-green-500" />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900">We'll be in touch!</h3>
-                <p className="text-gray-500">Thank you for reaching out. We have received your message.</p>
-                <button 
-                  onClick={() => setIsSuccess(false)}
-                  className="mt-6 text-brand-600 font-medium hover:text-brand-700 transition-colors"
-                >
-                  Send another message
-                </button>
+        <section ref={formRef} className="w-full px-4 pb-32 flex justify-center scroll-mt-20">
+          <div className="max-w-lg w-full glass-card rounded-[2rem] p-8 md:p-12 relative animate-slide-up" style={{ animationDelay: '0.2s' }}>
+            <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-50 rounded-[2rem] pointer-events-none" />
+            
+            <div className="relative z-10">
+              <div className="text-center mb-10">
+                <h2 className="text-3xl font-bold text-white mb-2">Let's Connect</h2>
+                <p className="text-slate-300">Fill out the form below and we'll be in touch shortly.</p>
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-                {serverErrors.general && (
-                  <div className="p-4 bg-red-50 text-red-700 rounded-xl flex items-center gap-3 animate-fade-in">
-                    <AlertCircle className="w-5 h-5 shrink-0" />
-                    <p className="text-sm font-medium">{serverErrors.general}</p>
+
+              {isSuccess ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center animate-fade-in space-y-4">
+                  <div className="w-24 h-24 bg-green-500/10 border border-green-500/20 rounded-full flex items-center justify-center mb-2 animate-float">
+                    <CheckCircle2 className="w-12 h-12 text-green-400" />
                   </div>
-                )}
-                
-                <div className="space-y-1.5">
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
-                  <input 
-                    type="text" 
-                    id="name" 
-                    name="name" 
-                    value={formData.name}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    placeholder="Jane Doe"
-                    className={cn(
-                      "w-full px-4 py-3 rounded-xl border bg-gray-50 text-gray-900 transition-all focus:bg-white focus-ring",
-                      (touched.name && errors.name) || serverErrors.name ? "border-red-300 focus:ring-red-500 focus:border-red-500 bg-red-50" : "border-gray-200"
-                    )}
-                  />
-                  {((touched.name && errors.name) || serverErrors.name) && (
-                    <p className="text-sm text-red-500 mt-1 animate-fade-in">{errors.name || serverErrors.name}</p>
-                  )}
-                </div>
-
-                <div className="space-y-1.5">
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    value={formData.email}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    placeholder="jane@example.com"
-                    className={cn(
-                      "w-full px-4 py-3 rounded-xl border bg-gray-50 text-gray-900 transition-all focus:bg-white focus-ring",
-                      (touched.email && errors.email) || serverErrors.email ? "border-red-300 focus:ring-red-500 focus:border-red-500 bg-red-50" : "border-gray-200"
-                    )}
-                  />
-                  {((touched.email && errors.email) || serverErrors.email) && (
-                    <p className="text-sm text-red-500 mt-1 animate-fade-in">{errors.email || serverErrors.email}</p>
-                  )}
-                </div>
-
-                <div className="space-y-1.5">
-                  <label htmlFor="budgetRange" className="block text-sm font-medium text-gray-700">Budget Range</label>
-                  <select 
-                    id="budgetRange" 
-                    name="budgetRange" 
-                    value={formData.budgetRange}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    className={cn(
-                      "w-full px-4 py-3 rounded-xl border bg-gray-50 text-gray-900 transition-all focus:bg-white focus-ring appearance-none",
-                      (touched.budgetRange && errors.budgetRange) || serverErrors.budgetRange ? "border-red-300 focus:ring-red-500 focus:border-red-500 bg-red-50" : "border-gray-200",
-                      !formData.budgetRange && "text-gray-500"
-                    )}
+                  <h3 className="text-2xl font-bold text-white">We'll be in touch!</h3>
+                  <p className="text-slate-300">Thank you for reaching out. We have received your message.</p>
+                  <button 
+                    onClick={() => setIsSuccess(false)}
+                    className="mt-6 text-brand-300 font-medium hover:text-brand-200 transition-colors underline underline-offset-4 decoration-brand-300/30"
                   >
-                    {budgetOptions.map(opt => (
-                      <option key={opt.value} value={opt.value} disabled={!opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
-                  {((touched.budgetRange && errors.budgetRange) || serverErrors.budgetRange) && (
-                    <p className="text-sm text-red-500 mt-1 animate-fade-in">{errors.budgetRange || serverErrors.budgetRange}</p>
-                  )}
+                    Send another message
+                  </button>
                 </div>
-
-                <div className="space-y-1.5">
-                  <div className="flex justify-between">
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700">Message</label>
-                    <span className={cn("text-xs", formData.message.length > 1000 ? "text-red-500 font-medium" : "text-gray-400")}>
-                      {formData.message.length} / 1000
-                    </span>
-                  </div>
-                  <textarea 
-                    id="message" 
-                    name="message" 
-                    rows={4}
-                    value={formData.message}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    placeholder="How can we help you?"
-                    className={cn(
-                      "w-full px-4 py-3 rounded-xl border bg-gray-50 text-gray-900 transition-all focus:bg-white focus-ring resize-none",
-                      (touched.message && errors.message) || serverErrors.message ? "border-red-300 focus:ring-red-500 focus:border-red-500 bg-red-50" : "border-gray-200"
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+                  {serverErrors.general && (
+                    <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-200 rounded-2xl flex items-start gap-3 animate-fade-in">
+                      <AlertCircle className="w-5 h-5 shrink-0 mt-0.5 text-red-400" />
+                      <p className="text-sm font-medium">{serverErrors.general}</p>
+                    </div>
+                  )}
+                  
+                  <div className="space-y-2">
+                    <label htmlFor="name" className="block text-sm font-medium text-slate-200 ml-1">Name</label>
+                    <input 
+                      type="text" 
+                      id="name" 
+                      name="name" 
+                      value={formData.name}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      placeholder="Jane Doe"
+                      className={cn(
+                        "w-full px-5 py-4 rounded-2xl glass-input focus-ring transition-all duration-300 outline-none",
+                        (touched.name && errors.name) || serverErrors.name ? "border-red-400/50 focus:ring-red-500/50 focus:border-red-500 bg-red-500/10" : ""
+                      )}
+                    />
+                    {((touched.name && errors.name) || serverErrors.name) && (
+                      <p className="text-sm text-red-400 mt-1 ml-1 animate-fade-in">{errors.name || serverErrors.name}</p>
                     )}
-                  />
-                  {((touched.message && errors.message) || serverErrors.message) && (
-                    <p className="text-sm text-red-500 mt-1 animate-fade-in">{errors.message || serverErrors.message}</p>
-                  )}
-                </div>
+                  </div>
 
-                <button 
-                  type="submit" 
-                  disabled={!isValid || isSubmitting}
-                  className="w-full bg-brand-600 text-white py-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-700 focus-ring shadow-lg shadow-brand-500/20"
-                >
-                  {isSubmitting ? (
-                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  ) : 'Submit Request'}
-                </button>
-              </form>
-            )}
+                  <div className="space-y-2">
+                    <label htmlFor="email" className="block text-sm font-medium text-slate-200 ml-1">Email</label>
+                    <input 
+                      type="email" 
+                      id="email" 
+                      name="email" 
+                      value={formData.email}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      placeholder="jane@example.com"
+                      className={cn(
+                        "w-full px-5 py-4 rounded-2xl glass-input focus-ring transition-all duration-300 outline-none",
+                        (touched.email && errors.email) || serverErrors.email ? "border-red-400/50 focus:ring-red-500/50 focus:border-red-500 bg-red-500/10" : ""
+                      )}
+                    />
+                    {((touched.email && errors.email) || serverErrors.email) && (
+                      <p className="text-sm text-red-400 mt-1 ml-1 animate-fade-in">{errors.email || serverErrors.email}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <label htmlFor="budgetRange" className="block text-sm font-medium text-slate-200 ml-1">Budget Range</label>
+                    <div className="relative">
+                      <select 
+                        id="budgetRange" 
+                        name="budgetRange" 
+                        value={formData.budgetRange}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        className={cn(
+                          "w-full px-5 py-4 rounded-2xl glass-input focus-ring transition-all duration-300 outline-none appearance-none",
+                          (touched.budgetRange && errors.budgetRange) || serverErrors.budgetRange ? "border-red-400/50 focus:ring-red-500/50 focus:border-red-500 bg-red-500/10" : "",
+                          !formData.budgetRange && "text-slate-400"
+                        )}
+                      >
+                        {budgetOptions.map(opt => (
+                          <option key={opt.value} value={opt.value} disabled={!opt.value} className="bg-slate-800 text-white">{opt.label}</option>
+                        ))}
+                      </select>
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-5 text-slate-400">
+                        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                      </div>
+                    </div>
+                    {((touched.budgetRange && errors.budgetRange) || serverErrors.budgetRange) && (
+                      <p className="text-sm text-red-400 mt-1 ml-1 animate-fade-in">{errors.budgetRange || serverErrors.budgetRange}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-end ml-1">
+                      <label htmlFor="message" className="block text-sm font-medium text-slate-200">Message</label>
+                      <span className={cn("text-xs font-medium", formData.message.length > 1000 ? "text-red-400" : "text-slate-400")}>
+                        {formData.message.length} / 1000
+                      </span>
+                    </div>
+                    <textarea 
+                      id="message" 
+                      name="message" 
+                      rows={4}
+                      value={formData.message}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      placeholder="Tell us about your project..."
+                      className={cn(
+                        "w-full px-5 py-4 rounded-2xl glass-input focus-ring transition-all duration-300 outline-none resize-none",
+                        (touched.message && errors.message) || serverErrors.message ? "border-red-400/50 focus:ring-red-500/50 focus:border-red-500 bg-red-500/10" : ""
+                      )}
+                    />
+                    {((touched.message && errors.message) || serverErrors.message) && (
+                      <p className="text-sm text-red-400 mt-1 ml-1 animate-fade-in">{errors.message || serverErrors.message}</p>
+                    )}
+                  </div>
+
+                  <button 
+                    type="submit" 
+                    disabled={!isValid || isSubmitting}
+                    className="w-full bg-gradient-to-r from-brand-500 to-fuchsia-500 text-white py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-[0_0_30px_-5px_rgba(217,70,239,0.5)] hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none focus-ring mt-4"
+                  >
+                    {isSubmitting ? (
+                      <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    ) : 'Submit Inquiry'}
+                  </button>
+                </form>
+              )}
+            </div>
           </div>
         </section>
       </main>
 
-      <footer className="py-8 text-center border-t border-gray-200 bg-white">
+      <footer className="relative z-10 py-8 text-center border-t border-white/10 bg-slate-900/50 backdrop-blur-md">
         <a 
           href="https://digitalheroesco.com" 
           target="_blank" 
           rel="noopener noreferrer"
-          className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+          className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
         >
           Built for Digital Heroes Training Task
         </a>
