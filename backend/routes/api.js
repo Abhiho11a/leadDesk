@@ -6,6 +6,11 @@ const Admin = require('../models/Admin');
 const { requireAuth } = require('../middleware/auth');
 const { validateLead, validateStatusUpdate } = require('../middleware/validate');
 
+
+router.get('/',(req,res)=>{
+  return res.status(200).json("Backend server is running");
+});
+
 // Create Lead (Public)
 router.post('/leads', validateLead, async (req, res, next) => {
   try {
