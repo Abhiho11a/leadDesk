@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
-import { Search, LogOut, Loader2, Inbox, ChevronDown, Check, Sparkles, Mail, DollarSign, Calendar } from 'lucide-react';
+import { Search, LogOut, Loader2, Inbox, ChevronDown, Check, Sparkles, Mail, DollarSign, Calendar, Trash2 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -65,13 +65,13 @@ function StatusDropdown({ status, onChange }) {
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "inline-flex items-center gap-2.5 px-4 py-2 rounded-full text-xs font-bold border transition-all duration-300 shadow-md active:scale-95 focus:outline-none focus:ring-2 focus:ring-brand-500/50 cursor-pointer",
+          "inline-flex items-center gap-2.5 px-4 py-2 rounded-full text-xs font-bold border transition-all duration-300 shadow-md active:scale-95 focus:outline-none focus:ring-2 focus:ring-brand-500/50 cursor-pointer h-9.5",
           currentConfig.badge
         )}
       >
-        <span className={cn("w-2 h-2 rounded-full animate-pulse", currentConfig.dot)} />
+        <span className={cn("w-2 h-2 rounded-full animate-pulse shrink-0", currentConfig.dot)} />
         <span>{currentConfig.label}</span>
-        <ChevronDown className={cn("w-3.5 h-3.5 opacity-80 transition-transform duration-300 ml-0.5", isOpen ? "rotate-180" : "")} />
+        <ChevronDown className={cn("w-3.5 h-3.5 opacity-80 transition-transform duration-300 shrink-0 ml-0.5", isOpen ? "rotate-180" : "")} />
       </button>
 
       {isOpen && (
@@ -167,6 +167,21 @@ export default function AdminDashboard() {
       await api.patch(`/leads/${id}/status`, { status: newStatus });
     } catch (err) {
       console.error('Failed to update status', err);
+      setLeads(originalLeads);
+    }
+  };
+
+  const handleDeleteLead = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this enquiry? This action cannot be undone.')) return;
+    
+    const originalLeads = [...leads];
+    setLeads(prev => prev.filter(lead => lead._id !== id));
+    
+    try {
+      await api.delete(`/leads/${id}`);
+    } catch (err) {
+      console.error('Failed to delete lead', err);
+      alert('Failed to delete enquiry. Please try again.');
       setLeads(originalLeads);
     }
   };
@@ -278,9 +293,10 @@ export default function AdminDashboard() {
             <div className="hidden lg:grid lg:grid-cols-12 gap-4 px-8 py-5 border-b border-white/10 bg-black/20 text-[11px] font-extrabold text-slate-400 uppercase tracking-widest rounded-t-3xl">
               <div className="col-span-3 flex items-center gap-2">Client Info</div>
               <div className="col-span-2 flex items-center gap-2">Budget Tier</div>
-              <div className="col-span-4 flex items-center gap-2">Inquiry Message</div>
-              <div className="col-span-1 flex items-center gap-2">Date</div>
-              <div className="col-span-2 text-right">Pipeline Status</div>
+              <div className="col-span-3 flex items-center gap-2">Inquiry Message</div>
+              <div className="col-span-1 flex items-center justify-center">Date</div>
+              <div className="col-span-2 flex items-center justify-center">Status</div>
+              <div className="col-span-1 flex items-center justify-center">Delete</div>
             </div>
 
             {/* Lead Rows */}
@@ -298,10 +314,20 @@ export default function AdminDashboard() {
                         <Calendar className="w-3.5 h-3.5 text-brand-400" />
                         {new Date(lead.createdAt).toLocaleDateString()}
                       </span>
-                      <StatusDropdown 
-                        status={lead.status} 
-                        onChange={(newStatus) => handleStatusChange(lead._id, newStatus)} 
-                      />
+                      <div className="flex items-center gap-3">
+                        <StatusDropdown 
+                          status={lead.status} 
+                          onChange={(newStatus) => handleStatusChange(lead._id, newStatus)} 
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteLead(lead._id)}
+                          title="Delete Enquiry"
+                          className="w-10 h-10 rounded-xl bg-red-500/15 hover:bg-red-500/25 text-red-400 hover:text-red-300 border border-red-500/25 hover:border-red-500/45 transition-all duration-300 shadow-lg shadow-red-500/10 active:scale-95 cursor-pointer flex items-center justify-center shrink-0 group/btn"
+                        >
+                          <Trash2 className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
+                        </button>
+                      </div>
                     </div>
 
                     {/* Client Info with Avatar */}
@@ -332,23 +358,35 @@ export default function AdminDashboard() {
                     </div>
 
                     {/* Message */}
-                    <div className="col-span-4">
+                    <div className="col-span-3">
                       <p className="text-sm text-slate-300 line-clamp-2 leading-relaxed bg-black/20 p-3 rounded-2xl border border-white/5 group-hover:border-white/10 transition-colors" title={lead.message}>
                         {lead.message}
                       </p>
                     </div>
 
                     {/* Date */}
-                    <div className="col-span-1 hidden lg:flex items-center text-xs font-semibold text-slate-400">
+                    <div className="col-span-1 hidden lg:flex items-center justify-center text-xs font-semibold text-slate-400">
                       {new Date(lead.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                     </div>
 
                     {/* Custom Modern Dropdown */}
-                    <div className="col-span-2 hidden lg:flex justify-end">
+                    <div className="col-span-2 hidden lg:flex items-center justify-center">
                       <StatusDropdown 
                         status={lead.status} 
                         onChange={(newStatus) => handleStatusChange(lead._id, newStatus)} 
                       />
+                    </div>
+
+                    {/* Styled Delete Button */}
+                    <div className="col-span-1 hidden lg:flex items-center justify-center">
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteLead(lead._id)}
+                        title="Delete Enquiry"
+                        className="w-10 h-10 rounded-xl bg-red-500/15 hover:bg-red-500/25 text-red-400 hover:text-red-300 border border-red-500/25 hover:border-red-500/45 transition-all duration-300 shadow-lg shadow-red-500/10 active:scale-95 cursor-pointer flex items-center justify-center shrink-0 group/btn"
+                      >
+                        <Trash2 className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
+                      </button>
                     </div>
 
                   </div>

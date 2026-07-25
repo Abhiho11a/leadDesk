@@ -37,6 +37,12 @@ const api = {
       method: 'PATCH',
       body: JSON.stringify(body),
     });
+  },
+
+  delete(endpoint) {
+    return this.fetchWithCredentials(endpoint, {
+      method: 'DELETE',
+    });
   }
 };
 

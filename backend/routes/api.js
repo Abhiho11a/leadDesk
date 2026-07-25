@@ -69,6 +69,17 @@ router.patch('/leads/:id/status', requireAuth, validateStatusUpdate, async (req,
   }
 });
 
+// Delete Lead (Protected)
+router.delete('/leads/:id', requireAuth, async (req, res, next) => {
+  try {
+    const lead = await Lead.findByIdAndDelete(req.params.id);
+    if (!lead) return res.status(404).json({ error: 'Lead not found' });
+    res.json({ message: 'Lead deleted successfully' });
+  } catch (err) {
+    next(err);
+  }
+});
+
 // Admin Login
 router.post('/auth/login', async (req, res, next) => {
   try {
