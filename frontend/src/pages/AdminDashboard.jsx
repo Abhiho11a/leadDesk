@@ -60,7 +60,7 @@ function StatusDropdown({ status, onChange }) {
   const currentConfig = statusConfig[status] || statusConfig['New'];
 
   return (
-    <div className="relative inline-block text-left" ref={dropdownRef}>
+    <div className={cn("relative inline-block text-left", isOpen ? "z-[100]" : "z-10")} ref={dropdownRef}>
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
@@ -202,7 +202,7 @@ export default function AdminDashboard() {
         </button>
       </nav>
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-6 relative z-10">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-32 flex flex-col gap-6 relative z-10">
         
         {/* Controls Bar */}
         <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-white/5 backdrop-blur-xl p-4 sm:p-5 rounded-3xl shadow-2xl border border-white/10">
@@ -273,9 +273,9 @@ export default function AdminDashboard() {
             )}
           </div>
         ) : (
-          <div className="bg-white/5 backdrop-blur-2xl shadow-2xl shadow-black/50 border border-white/10 rounded-3xl overflow-hidden animate-fade-in">
+          <div className="bg-white/5 backdrop-blur-2xl shadow-2xl shadow-black/50 border border-white/10 rounded-3xl animate-fade-in">
             {/* Table Header */}
-            <div className="hidden lg:grid lg:grid-cols-12 gap-4 px-8 py-5 border-b border-white/10 bg-black/20 text-[11px] font-extrabold text-slate-400 uppercase tracking-widest">
+            <div className="hidden lg:grid lg:grid-cols-12 gap-4 px-8 py-5 border-b border-white/10 bg-black/20 text-[11px] font-extrabold text-slate-400 uppercase tracking-widest rounded-t-3xl">
               <div className="col-span-3 flex items-center gap-2">Client Info</div>
               <div className="col-span-2 flex items-center gap-2">Budget Tier</div>
               <div className="col-span-4 flex items-center gap-2">Inquiry Message</div>
@@ -288,7 +288,7 @@ export default function AdminDashboard() {
               {leads.map((lead) => (
                 <li 
                   key={lead._id} 
-                  className="p-5 lg:px-8 lg:py-6 hover:bg-white/[0.04] transition-all duration-300 group"
+                  className="p-5 lg:px-8 lg:py-6 hover:bg-white/[0.04] transition-all duration-300 group first:rounded-t-3xl lg:first:rounded-t-none last:rounded-b-3xl"
                 >
                   <div className="flex flex-col lg:grid lg:grid-cols-12 gap-4 lg:items-center">
                     
